@@ -15,13 +15,18 @@ class Quiz extends Model
     protected $fillable = [
         'title',
         'description',
+        'subject',
+        'topic',
         'difficulty_level',
         'total_points',
         'time_limit_minutes',
+        'pass_threshold',
+        'max_attempts',
         'is_ai_generated',
         'ai_generation_prompt',
         'created_by',
         'is_published',
+        'is_featured',
         'is_active',
     ];
 
@@ -30,8 +35,11 @@ class Quiz extends Model
         return [
             'total_points' => 'integer',
             'time_limit_minutes' => 'integer',
+            'pass_threshold' => 'integer',
+            'max_attempts' => 'integer',
             'is_ai_generated' => 'boolean',
             'is_published' => 'boolean',
+            'is_featured' => 'boolean',
             'is_active' => 'boolean',
         ];
     }
@@ -98,6 +106,22 @@ class Quiz extends Model
     public function scopeDifficulty($query, string $level)
     {
         return $query->where('difficulty_level', $level);
+    }
+
+    /**
+     * Scope a query to only include featured quizzes.
+     */
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true);
+    }
+
+    /**
+     * Scope a query to filter by subject.
+     */
+    public function scopeSubject($query, string $subject)
+    {
+        return $query->where('subject', $subject);
     }
 
     /**
