@@ -40,4 +40,3 @@ class DailyActivity extends Model
         return $this->belongsTo(PlayerProfile::class);
     }
 }
-

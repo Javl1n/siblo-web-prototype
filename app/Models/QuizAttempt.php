@@ -102,4 +102,3 @@ class QuizAttempt extends Model
         $this->save();
     }
 }
-

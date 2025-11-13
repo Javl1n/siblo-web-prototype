@@ -76,4 +76,3 @@ class QuizReward extends Model
         $this->save();
     }
 }
-

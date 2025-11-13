@@ -51,4 +51,3 @@ class AiQuizGeneration extends Model
         return $this->belongsTo(Quiz::class);
     }
 }
-

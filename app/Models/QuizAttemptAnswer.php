@@ -54,4 +54,3 @@ class QuizAttemptAnswer extends Model
         return $this->belongsTo(QuestionChoice::class);
     }
 }
-

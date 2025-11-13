@@ -176,7 +176,7 @@ class PlayerSiblon extends Model
     /**
      * Heal the Siblon.
      */
-    public function heal(int $amount = null): void
+    public function heal(?int $amount = null): void
     {
         $this->current_hp = $amount ? min($this->current_hp + $amount, $this->max_hp) : $this->max_hp;
         $this->save();

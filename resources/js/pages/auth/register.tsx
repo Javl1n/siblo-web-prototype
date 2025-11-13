@@ -1,7 +1,6 @@
 import { login } from '@/routes';
 import { store } from '@/routes/register';
 import { Form, Head } from '@inertiajs/react';
-import { useState } from 'react';
 
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
@@ -9,12 +8,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import AuthLayout from '@/layouts/auth-layout';
 
 export default function Register() {
-    const [userType, setUserType] = useState<string>('student');
-
     return (
         <AuthLayout
             title="Create an account"
@@ -76,38 +72,11 @@ export default function Register() {
                                 <InputError message={errors.email} />
                             </div>
 
-                            <div className="grid gap-2">
-                                <Label htmlFor="user_type">I am a...</Label>
-                                <input
-                                    type="hidden"
-                                    name="user_type"
-                                    value={userType}
-                                />
-                                <ToggleGroup
-                                    type="single"
-                                    value={userType}
-                                    onValueChange={(value) => {
-                                        if (value) setUserType(value);
-                                    }}
-                                    variant="outline"
-                                    className="w-full"
-                                    tabIndex={4}
-                                >
-                                    <ToggleGroupItem
-                                        value="student"
-                                        className="flex-1"
-                                    >
-                                        Student
-                                    </ToggleGroupItem>
-                                    <ToggleGroupItem
-                                        value="teacher"
-                                        className="flex-1"
-                                    >
-                                        Teacher
-                                    </ToggleGroupItem>
-                                </ToggleGroup>
-                                <InputError message={errors.user_type} />
-                            </div>
+                            <input
+                                type="hidden"
+                                name="user_type"
+                                value="teacher"
+                            />
 
                             <div className="grid gap-2">
                                 <Label htmlFor="password">Password</Label>
@@ -115,7 +84,7 @@ export default function Register() {
                                     id="password"
                                     type="password"
                                     required
-                                    tabIndex={5}
+                                    tabIndex={4}
                                     autoComplete="new-password"
                                     name="password"
                                     placeholder="Password"
@@ -131,7 +100,7 @@ export default function Register() {
                                     id="password_confirmation"
                                     type="password"
                                     required
-                                    tabIndex={6}
+                                    tabIndex={5}
                                     autoComplete="new-password"
                                     name="password_confirmation"
                                     placeholder="Confirm password"
@@ -144,7 +113,7 @@ export default function Register() {
                             <Button
                                 type="submit"
                                 className="mt-2 w-full"
-                                tabIndex={7}
+                                tabIndex={6}
                                 data-test="register-user-button"
                             >
                                 {processing && <Spinner />}
@@ -154,7 +123,7 @@ export default function Register() {
 
                         <div className="text-center text-sm text-muted-foreground">
                             Already have an account?{' '}
-                            <TextLink href={login()} tabIndex={8}>
+                            <TextLink href={login()} tabIndex={7}>
                                 Log in
                             </TextLink>
                         </div>

@@ -45,4 +45,3 @@ class QuestionChoice extends Model
         return $this->hasMany(QuizAttemptAnswer::class);
     }
 }
-

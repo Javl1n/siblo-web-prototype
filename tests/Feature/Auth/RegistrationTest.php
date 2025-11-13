@@ -7,11 +7,21 @@ test('registration screen can be rendered', function () {
 });
 
 test('new users can register', function () {
+    $this->withoutMiddleware();
+
     $response = $this->post(route('register.store'), [
         'name' => 'Test User',
+        'username' => 'testuser',
         'email' => 'test@example.com',
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'user_type' => 'teacher',
+        'password' => 'password123',
+        'password_confirmation' => 'password123',
+    ]);
+
+    $this->assertDatabaseHas('users', [
+        'email' => 'test@example.com',
+        'username' => 'testuser',
+        'user_type' => 'teacher',
     ]);
 
     $this->assertAuthenticated();
