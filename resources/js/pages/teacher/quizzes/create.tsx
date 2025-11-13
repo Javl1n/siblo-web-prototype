@@ -253,6 +253,45 @@ export default function Create() {
         setIsGenerating(false);
     };
 
+    const validateQuestions = () => {
+        const errors: string[] = [];
+
+        questions.forEach((question, qIndex) => {
+            const correctChoices = question.choices.filter(
+                (c) => c.is_correct,
+            ).length;
+
+            if (correctChoices === 0) {
+                errors.push(
+                    `Question ${qIndex + 1}: At least one choice must be marked as correct`,
+                );
+            }
+
+            if (question.question_text.trim() === '') {
+                errors.push(
+                    `Question ${qIndex + 1}: Question text is required`,
+                );
+            }
+
+            question.choices.forEach((choice, cIndex) => {
+                if (choice.choice_text.trim() === '') {
+                    errors.push(
+                        `Question ${qIndex + 1}, Choice ${cIndex + 1}: Choice text is required`,
+                    );
+                }
+            });
+        });
+
+        if (errors.length > 0) {
+            alert(
+                'Please fix the following errors:\n\n' + errors.join('\n'),
+            );
+            return false;
+        }
+
+        return true;
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Create Quiz" />
@@ -275,7 +314,20 @@ export default function Create() {
                     </Button>
                 </div>
 
-                <Form action="/teacher/quizzes" method="post">
+                <Form
+                    action="/teacher/quizzes"
+                    method="post"
+                    transform={(data) => ({
+                        ...data,
+                        is_published: data.is_published ? true : false,
+                        is_featured: data.is_featured ? true : false,
+                    })}
+                    onSubmit={(e) => {
+                        if (!validateQuestions()) {
+                            e.preventDefault();
+                        }
+                    }}
+                >
                     {({ processing, errors }) => (
                         <>
                             <Card className="p-6">
@@ -497,6 +549,11 @@ export default function Create() {
                                                         className="min-h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                                                         placeholder="Enter your question..."
                                                     />
+                                                    {errors[`questions.${qIndex}.question_text`] && (
+                                                        <p className="text-sm text-red-600">
+                                                            {errors[`questions.${qIndex}.question_text`]}
+                                                        </p>
+                                                    )}
                                                 </div>
 
                                                 <div className="grid gap-4 md:grid-cols-2">
@@ -581,8 +638,12 @@ export default function Create() {
                                                                     className="flex items-center gap-2"
                                                                 >
                                                                     <input
-                                                                        type="checkbox"
+                                                                        type="hidden"
                                                                         name={`questions[${qIndex}][choices][${cIndex}][is_correct]`}
+                                                                        value={choice.is_correct ? '1' : '0'}
+                                                                    />
+                                                                    <input
+                                                                        type="checkbox"
                                                                         checked={
                                                                             choice.is_correct
                                                                         }
@@ -647,6 +708,11 @@ export default function Create() {
                                                         Check the box to mark the
                                                         correct answer
                                                     </p>
+                                                    {errors[`questions.${qIndex}.choices`] && (
+                                                        <p className="text-sm text-red-600">
+                                                            {errors[`questions.${qIndex}.choices`]}
+                                                        </p>
+                                                    )}
                                                 </div>
 
                                                 <div>
@@ -672,6 +738,12 @@ export default function Create() {
                                     ))}
                                 </div>
                             </Card>
+
+                            {errors.questions && (
+                                <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600 dark:border-red-800 dark:bg-red-950">
+                                    {errors.questions}
+                                </div>
+                            )}
 
                             <div className="flex gap-2">
                                 <Button type="submit" disabled={processing}>

@@ -147,7 +147,7 @@ class AiQuizGenerationController extends Controller
             return $this->generateSampleQuestions($params);
         }
 
-        $basePrompt = "You are an expert Filipino educator creating quiz questions for {$subject} at difficulty level: {$difficulty} for grade level {$gradeLevel}.";
+        $basePrompt = "You are an expert educator creating quiz questions in English for {$subject} at difficulty level: {$difficulty} for grade level {$gradeLevel}.";
 
         if ($moduleContent) {
             $prompt = <<<EOT
@@ -188,7 +188,7 @@ IMPORTANT: Return ONLY a valid JSON array with this EXACT structure (no markdown
   }
 ]
 
-Make questions culturally relevant to Filipino students. Ensure exactly ONE choice is marked as correct for each question.
+Ensure exactly ONE choice is marked as correct for each question. All questions and answers must be in English.
 EOT;
 
         try {
