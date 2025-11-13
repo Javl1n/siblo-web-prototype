@@ -3,5 +3,5 @@
 return [
     App\Providers\AppServiceProvider::class,
     App\Providers\FortifyServiceProvider::class,
-    App\Providers\TelescopeServiceProvider::class,
+    App::environment('local') ? App\Providers\TelescopeServiceProvider::class : null,
 ];
